@@ -1,28 +1,53 @@
-<div class="login-container">
-    <h2>Connexion</h2>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div>
-        <label for="email">Telephone</label>
-        <input id="email" formControlName="telephone" />
-        <div *ngIf="telephone?.touched && telephone?.invalid">
-          <small *ngIf="telephone?.errors?.['required']">Le telephone est requis.</small>
-          <small *ngIf="telephone?.errors?.['telephone']">telephone invalide.</small>
+<div class="login-wrapper">
+  <div class="login-container">
+    <h2 class="title">Connexion</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-group">
+        <div class="input-group">
+          <input id="telephone" formControlName="telephone" required />
+          <label for="telephone" [class.filled]="telephone?.value">
+            <i class="fas fa-phone"></i> Téléphone
+          </label>
+          <span class="highlight"></span>
+          <span class="bar"></span>
+        </div>
+        <div class="error-container" *ngIf="telephone?.touched && telephone?.invalid">
+          <small *ngIf="telephone?.errors?.['required']" class="error-message">
+            <i class="fas fa-exclamation-circle"></i> Le téléphone est requis
+          </small>
+          <small *ngIf="telephone?.errors?.['telephone']" class="error-message">
+            <i class="fas fa-exclamation-circle"></i> Téléphone invalide
+          </small>
         </div>
       </div>
-  
-      <div>
-        <label for="password">Mot de passe</label>
-        <input type="password" id="password" formControlName="mdp" />
-        <div *ngIf="mdp?.touched && mdp?.invalid">
-          <small *ngIf="mdp?.errors?.['required']">Le mot de passe est requis.</small>
+
+      <div class="form-group">
+        <div class="input-group">
+          <input type="password" id="password" formControlName="mdp" required />
+          <label for="password" [class.filled]="mdp?.value">
+            <i class="fas fa-lock"></i> Mot de passe
+          </label>
+          <span class="highlight"></span>
+          <span class="bar"></span>
+        </div>
+        <div class="error-container" *ngIf="mdp?.touched && mdp?.invalid">
+          <small *ngIf="mdp?.errors?.['required']" class="error-message">
+            <i class="fas fa-exclamation-circle"></i> Le mot de passe est requis
+          </small>
         </div>
       </div>
-  
-      <button type="submit" [disabled]="isLoading">Se connecter</button>
-  
-      <div *ngIf="errorMessage">
-        <p class="error">{{ errorMessage }}</p>
+
+      <button type="submit" [disabled]="isLoading || loginForm.invalid" class="submit-btn">
+        <span *ngIf="!isLoading">Se connecter</span>
+        <div class="loader" *ngIf="isLoading">
+          <div class="spinner"></div>
+        </div>
+      </button>
+
+      <div class="error-alert" *ngIf="errorMessage" [@fadeInOut]>
+        <i class="fas fa-exclamation-triangle"></i>
+        {{ errorMessage }}
       </div>
     </form>
   </div>
-  
+</div>

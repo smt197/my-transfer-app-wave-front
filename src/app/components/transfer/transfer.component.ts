@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TransactionService } from '../../services/transaction.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 
 @Component({
@@ -9,14 +10,45 @@ import { TransactionService } from '../../services/transaction.service';
   standalone: true,
   imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './transfer.component.html',
-  styleUrl: './transfer.component.css'
+  styleUrl: './transfer.component.scss',
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms ease-out', style({ opacity: 1 }))
+      ])
+    ]),
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ 
+          opacity: 0,
+          transform: 'translateY(-20px)'
+        }),
+        animate('300ms ease-out', style({ 
+          opacity: 1,
+          transform: 'translateY(0)'
+        }))
+      ])
+    ]),
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0, height: 0 }),
+        animate('200ms ease-out', style({ opacity: 1, height: '*' }))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({ opacity: 0, height: 0 }))
+      ])
+    ])
+  ]
 })
 
 export class TransferComponent implements OnInit {
 
+  isFocused: string = '';
   transferForm: FormGroup;
   isLoading = false;
   errorMessage = '';
+  closeTransfer: any;
 
   constructor(private fb: FormBuilder,private transactionService: TransactionService) {
     this.transferForm = this.fb.group({

@@ -1,68 +1,104 @@
-<div class="dashboard-container">
-    <!-- Header with balance -->
-    <div class="header">
-      <h2>Bonjour, {{userName}}!</h2>
-      <div class="balance-card">
-        <div class="solde">
-            <h3>Solde</h3>
-            <h2>FR {{ solde | number }}</h2>
-        </div>
-        <div class="solde">
-            <h3>Plafond</h3>
-            <h2>FR {{ plafond | number }}</h2>
-        </div>
+<div class="dashboard-wrapper">
+  <div class="dashboard-container">
+    <!-- Header Section -->
+    <div class="header" fadeInDown>
+      <div class="welcome-section">
+        <h2>Bonjour, <span class="username">{{userName}}</span>!</h2>
       </div>
-    </div> 
-  
-    <!-- Action buttons -->
-    <div class="actions-grid">
-      <button class="action-button">
-        <i class="fas fa-exchange-alt"></i>
-        Topup
-      </button>
-      <button class="action-button" (click)="toggleTransferForm()">
-        <i class="fas fa-paper-plane"></i>
-        Transfer
-      </button>
-      <button class="action-button">
-        <i class="fas fa-wallet"></i>
-        Withdraw
-      </button>
-      <button class="action-button" (click)="toggleProfileMenu()">
-        <i class="fas fa-ellipsis-h"></i>
-        Profil
-      </button>
-  
-      <!-- Modal for profile menu -->
-      <div class="profile-menu" *ngIf="showProfileMenu" (clickOutside)="closeProfileMenu()">
-        <button (click)="logout()">Déconnexion</button>
+      
+      <div class="balance-cards">
+        <div class="balance-card" @slideIn>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <div class="balance-info">
+              <h3>Solde</h3>
+              <h2>FR {{ solde | number }}</h2>
+            </div>
+          </div>
+          <div class="card-background"></div>
+        </div>
+
+        <div class="balance-card" @slideIn>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="balance-info">
+              <h3>Plafond</h3>
+              <h2>FR {{ plafond | number }}</h2>
+              <button class="deplafonner" type="button">Deplafonner</button>
+            </div>
+          </div>
+          <div class="card-background"></div>
+        </div>
       </div>
     </div>
 
+    <!-- Actions Grid -->
+    <div class="actions-grid" @fadeInUp>
+      <button class="action-button ripple" @buttonHover>
+        <div class="button-content">
+          <i class="fas fa-exchange-alt"></i>
+          <span>Topup</span>
+        </div>
+      </button>
+
+      <button class="action-button ripple" (click)="toggleTransferForm()" @buttonHover>
+        <div class="button-content">
+          <i class="fas fa-paper-plane"></i>
+          <span>Transfer</span>
+        </div>
+      </button>
+
+      <button class="action-button ripple" @buttonHover>
+        <div class="button-content">
+          <i class="fas fa-wallet"></i>
+          <span>Withdraw</span>
+        </div>
+      </button>
+
+      <button class="action-button ripple" (click)="toggleProfileMenu()" @buttonHover>
+        <div class="button-content">
+          <i class="fas fa-ellipsis-h"></i>
+          <span>Profil</span>
+        </div>
+      </button>
+
+      <!-- Profile Menu -->
+      <div class="profile-menu" *ngIf="showProfileMenu" @fadeInOut (clickOutside)="closeProfileMenu()">
+        <button class="menu-item" (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          Déconnexion
+        </button>
+      </div>
+    </div>
+
+    <!-- Transfer Component -->
     <app-transfer 
       *ngIf="showTransferForm" 
+      @fadeInOut
       (transferSubmitted)="onTransferSubmitted()" 
       (closeTransfer)="toggleTransferForm()">
     </app-transfer>
-  
-    <!-- Transaction history -->
-    <div class="transactions">
+
+    <!-- Transactions Section -->
+    <div class="transactions-section" @fadeInUp>
       <h3>Transaction History</h3>
       <div class="transaction-list">
-        <div *ngFor="let notification of notifications" class="transaction-item">
-          <div class="transaction-info">
-            <span class="transaction-name">
-              {{ notification.message }}
-            </span>
-            <span class="transaction-date">
-              {{ notification.date | date:'d MMMM yyyy' }}
-            </span>
+        <div *ngFor="let notification of notifications; let i = index" 
+             class="transaction-item"
+             [@listAnimation]="{value: ':enter', params: {delay: i * 100}}">
+          <div class="transaction-icon">
+            <i class="fas fa-arrow-up"></i>
           </div>
-          <span class="transaction-amount">
-            <!-- {{ notification.utilisateur._id ? '-' : '+' }} -->
-          </span>
+          <div class="transaction-info">
+            <span class="transaction-name">{{ notification.message }}</span>
+            <span class="transaction-date">{{ notification.date | date:'d MMMM yyyy' }}</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

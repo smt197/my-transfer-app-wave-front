@@ -1,0 +1,208 @@
+// Variables
+$primary-color: #4a90e2;
+$error-color: #ff4444;
+$success-color: #00C851;
+$text-color: #2c3e50;
+$border-color: #e0e0e0;
+$background-color: #f8f9fa;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transfer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  @include flex-center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.transfer-modal {
+  background: white;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.transfer-header {
+  padding: 20px;
+  background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.transfer-form {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 2px solid $border-color;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+
+  &.focused {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+
+    .input-icon {
+      color: $primary-color;
+    }
+  }
+
+  .input-icon {
+    padding: 0 15px;
+    color: #666;
+    transition: color 0.3s ease;
+  }
+
+  .input-content {
+    flex: 1;
+    position: relative;
+    
+    input {
+      width: 100%;
+      padding: 15px 0;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      background: transparent;
+
+      &.has-error {
+        color: $error-color;
+      }
+    }
+
+    label {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      color: #666;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      padding: 0 5px;
+      
+      &.float {
+        top: 0;
+        font-size: 0.8rem;
+        color: $primary-color;
+        background: white;
+      }
+    }
+  }
+}
+
+.error-container {
+  margin-top: 5px;
+  
+  small {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: $error-color;
+    font-size: 0.8rem;
+
+    i {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.global-error {
+  background: rgba($error-color, 0.1);
+  color: $error-color;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+.submit-button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: $primary-color;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  @include flex-center;
+  gap: 10px;
+
+  &:hover:not(:disabled) {
+    background: darken($primary-color, 5%);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  .button-content {
+    @include flex-center;
+    gap: 8px;
+  }
+
+  .loader {
+    @include flex-center;
+    gap: 8px;
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 5; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.submit-button:disabled span {
+  animation: pulse 1.5s infinite;
+}

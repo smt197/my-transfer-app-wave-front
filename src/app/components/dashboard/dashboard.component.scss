@@ -1,0 +1,272 @@
+// Variables
+$primary-color: #4a90e2;
+$secondary-color: #2c3e50;
+$success-color: #2ecc71;
+$warning-color: #f1c40f;
+$background-color: #f8f9fa;
+$card-background: linear-gradient(135deg, #6e8efb, #4a90e2);
+
+// Mixins
+@mixin card-shadow {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+@mixin glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+// Header Section
+.header {
+  margin-bottom: 2rem;
+
+  .welcome-section {
+    margin-bottom: 1.5rem;
+
+    h2 {
+      font-size: 1.8rem;
+      color: $secondary-color;
+
+      .username {
+        color: $primary-color;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+// Balance Cards
+.balance-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 2rem;
+}
+
+.balance-card {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 15px;
+  overflow: hidden;
+  @include card-shadow;
+
+  .card-content {
+    position: relative;
+    z-index: 1;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .card-icon {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 1rem;
+      border-radius: 50%;
+      
+      i {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .card-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $card-background;
+    z-index: 0;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .card-background {
+    transform: scale(1.05);
+  }
+}
+
+// Actions Grid
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 2rem;
+}
+
+.action-button {
+  position: relative;
+  padding: 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  @include card-shadow;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+
+  .button-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+      font-size: 1.5rem;
+      color: $primary-color;
+    }
+
+    span {
+      font-weight: 500;
+      color: $secondary-color;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+// Profile Menu
+.profile-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 10px;
+  @include card-shadow;
+  overflow: hidden;
+  z-index: 1000;
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    width: 100%;
+    border: none;
+    background: none;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgba($primary-color, 0.1);
+    }
+
+    i {
+      color: $primary-color;
+    }
+  }
+}
+
+// Transactions Section
+.transactions-section {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  @include card-shadow;
+
+  h3 {
+    margin-bottom: 1rem;
+    color: $secondary-color;
+  }
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+  }
+
+  .transaction-icon {
+    background: rgba($primary-color, 0.1);
+    padding: 0.8rem;
+    border-radius: 50%;
+
+    i {
+      color: $primary-color;
+      font-size: 1rem;
+    }
+  }
+
+  .transaction-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    .transaction-name {
+      font-weight: 500;
+      color: $secondary-color;
+    }
+
+    .transaction-date {
+      font-size: 0.9rem;
+      color: #666;
+    }
+  }
+}
+
+// Animations
+.ripple {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    background: rgba($primary-color, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+  }
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.deplafonner{
+  padding: 10px;
+  background: $primary-color;
+  color: white;
+  border-radius: 5px;
+  animation: deplafonner 1s ease-in-out infinite;
+  @keyframes deplafonner {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+}

@@ -8,7 +8,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import {TransferComponent} from '../transfer/transfer.component';
-
+import { trigger, transition, style, animate } from '@angular/animations';
 
 
 @Component({
@@ -16,7 +16,75 @@ import {TransferComponent} from '../transfer/transfer.component';
   standalone: true,
   imports: [CommonModule,TransferComponent],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.scss',
+  animations: [
+    // Animation pour le fade in down
+    trigger('fadeInDown', [
+      transition(':enter', [
+        style({ 
+          opacity: 0,
+          transform: 'translateY(-20px)'
+        }),
+        animate('300ms ease-out', style({ 
+          opacity: 1,
+          transform: 'translateY(0)'
+        }))
+      ])
+    ]),
+
+    // Animation pour le slide in
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ 
+          opacity: 0,
+          transform: 'translateX(-100px)'
+        }),
+        animate('300ms ease-out', style({ 
+          opacity: 1,
+          transform: 'translateX(0)'
+        }))
+      ])
+    ]),
+
+    // Animation pour le fade in up
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ 
+          opacity: 0,
+          transform: 'translateY(20px)'
+        }),
+        animate('300ms ease-out', style({ 
+          opacity: 1,
+          transform: 'translateY(0)'
+        }))
+      ])
+    ]),
+
+    // Animation pour le fade in/out
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('150ms ease-out', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('150ms ease-in', style({ opacity: 0 }))
+      ])
+    ]),
+
+    // Animation pour les items de la liste
+    trigger('listItem', [
+      transition(':enter', [
+        style({ 
+          opacity: 0,
+          transform: 'translateY(10px)'
+        }),
+        animate('300ms ease-out', style({ 
+          opacity: 1,
+          transform: 'translateY(0)'
+        }))
+      ])
+    ])
+  ]
 })
 export class DashboardComponent implements OnInit {
 
@@ -151,14 +219,12 @@ export class DashboardComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('token');
-    this.currentUserId = '';
-    this.router.navigate(['/login']); // Redirige vers la page de login
-    console.log("Déconnexion...");
+    localStorage.clear(); // ou vos removeItem spécifiques
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    }); 
     this.closeProfileMenu();
   }
-
   // Fermer le modal lorsqu'on clique en dehors
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {

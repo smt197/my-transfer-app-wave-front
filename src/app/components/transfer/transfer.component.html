@@ -1,0 +1,45 @@
+<div class="transfer-container">
+    <h2>Transfer Money</h2>
+    
+    <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="receiverId">Receiver</label>
+        <input 
+          type="text" 
+          id="receiverId"
+          formControlName="receiverId"
+          class="form-control"
+          [ngClass]="{'is-invalid': receiverId?.invalid && receiverId?.touched}">
+        <div class="error-message" *ngIf="receiverId?.invalid && receiverId?.touched">
+          <span *ngIf="receiverId?.errors?.['required']">Receiver ID is required</span>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input 
+          type="number" 
+          id="amount"
+          formControlName="montant"
+          class="form-control"
+          [ngClass]="{'is-invalid': montant?.invalid && montant?.touched}">
+        <div class="error-message" *ngIf="montant?.invalid && montant?.touched">
+          <span *ngIf="montant?.errors?.['required']">Montant is required</span>
+          <span *ngIf="montant?.errors?.['min']">Montant must be greater than 0</span>
+          <span *ngIf="montant?.errors?.['pattern']">Montant must be a valid number</span>
+        </div>
+      </div>
+  
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+  
+      <button 
+        type="submit" 
+        [disabled]="!transferForm.valid || isLoading" 
+        class="submit-button">
+        <span *ngIf="!isLoading">Send Money</span>
+        <span *ngIf="isLoading">Processing...</span>
+      </button>
+    </form>
+  </div>

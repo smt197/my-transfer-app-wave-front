@@ -1,0 +1,79 @@
+.transfer-container {
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+  
+    h2 {
+      margin-bottom: 24px;
+      color: #333;
+      text-align: center;
+    }
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+    }
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+  
+    &:focus {
+      outline: none;
+      border-color: #6b2afd;
+    }
+  
+    &.is-invalid {
+      border-color: #ff4444;
+    }
+  }
+  
+  .error-message {
+    color: #ff4444;
+    font-size: 14px;
+    margin-top: 4px;
+    min-height: 20px;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 16px;
+    background: #6b2afd;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  
+    &:hover {
+      background: #5e3ad7;
+    }
+  
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 5; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+  
+  .submit-button:disabled span {
+    animation: pulse 1.5s infinite;
+  }

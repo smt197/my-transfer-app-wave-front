@@ -1,0 +1,17 @@
+.login-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  button {
+    width: 100%;
+  }
+  

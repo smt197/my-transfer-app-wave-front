@@ -1,0 +1,48 @@
+<div class="overlay" (click)="closeForm()" *ngIf="isFormVisible">
+    <div class="popup" (click)="$event.stopPropagation()">
+      <div class="transaction-form">
+        <h2>Effectuer une Transaction</h2>
+        <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="montant">Montant:</label>
+            <input id="montant" formControlName="montant" type="number" />
+          </div>
+  
+          <div class="form-group">
+            <label for="sender_id">Sender:</label>
+            <input id="sender_id" formControlName="sender_telephone" type="text" />
+          </div>
+  
+          <div class="form-group">
+            <label for="recever_id">Receiver:</label>
+            <input id="recever_id" formControlName="recever_telephone" type="text" />
+          </div>
+  
+          <div class="form-group">
+            <label for="transaction">Type de Transaction:</label>
+            <select id="transaction" formControlName="transaction">
+              <option value="transfert">Transfert</option>
+              <option value="depot">Dépôt</option>
+              <option value="retrait">Retrait</option>
+            </select>
+          </div>
+  
+          <div class="form-group checkbox-group">
+            <input id="frais" formControlName="frais" type="checkbox" />
+            <label for="frais">Inclure Frais</label>
+          </div>
+  
+          <button type="submit" [disabled]="transactionForm.invalid" class="submit-button">Soumettre</button>
+        </form>
+  
+        <div *ngIf="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
+  
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+  

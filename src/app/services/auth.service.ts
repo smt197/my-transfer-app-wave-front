@@ -77,6 +77,6 @@ export class AuthService {
 
   getUserName(): string | null {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    return user ? user.prenom + ' ' + user.nom : null;
+    return user ? user.prenom + ' ' + user.nom + ' -' + user.role : null;
   }
 }

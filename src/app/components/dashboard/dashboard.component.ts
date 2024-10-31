@@ -8,6 +8,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import {TransferComponent} from '../transfer/transfer.component';
+import { TransactionComponent } from '../transaction/transaction.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 
@@ -17,7 +18,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule,TransferComponent],
+  imports: [CommonModule,TransferComponent,TransactionComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   animations: [
@@ -100,6 +101,7 @@ export class DashboardComponent implements OnInit {
   currentUserId!:string ;
   showProfileMenu = false;
   showTransferForm = false;
+  showTransactionForm = false;
   transferForm: FormGroup;
   isLoading = false;
   errorMessage = '';
@@ -123,8 +125,14 @@ export class DashboardComponent implements OnInit {
   toggleTransferForm() {
     this.showTransferForm = !this.showTransferForm;
   }
+  toggleTransactionForm() {
+    this.showTransactionForm =!this.showTransactionForm;
+  }
   onTransferSubmitted() {
     this.showTransferForm = false;
+  }
+  onTransactionSubmitted() {
+    this.showTransactionForm = false;
   }
 
   ngOnInit() {

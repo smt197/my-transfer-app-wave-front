@@ -3,7 +3,7 @@
     <!-- Header Section -->
     <div class="header" fadeInDown>
       <div class="welcome-section">
-        <h2>Bonjour, <span class="username">{{userName}}</span>!</h2>
+        <h2>Bonjour, <span class="username">{{userName}}</span></h2>
       </div>
       
       <div class="balance-cards">
@@ -38,10 +38,10 @@
 
     <!-- Actions Grid -->
     <div class="actions-grid" @fadeInUp>
-      <button class="action-button ripple" @buttonHover>
+      <button class="action-button ripple" (click)="toggleTransactionForm()" @buttonHover>
         <div class="button-content">
           <i class="fas fa-exchange-alt"></i>
-          <span>Topup</span>
+          <span>Transaction</span>
         </div>
       </button>
 
@@ -74,6 +74,14 @@
         </button>
       </div>
     </div>
+
+    <!-- Transaction Component -->
+    <app-transaction 
+      *ngIf="showTransactionForm" 
+      @fadeInOut
+      (transactionSubmitted)="onTransactionSubmitted()" 
+      (closeTransaction)="toggleTransactionForm()">
+    </app-transaction>
 
     <!-- Transfer Component -->
     <app-transfer 

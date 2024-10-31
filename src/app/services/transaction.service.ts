@@ -41,21 +41,33 @@ export class TransactionService {
   }
   
 
-  getUserBalance(): Observable<number> {
+  getUserBalance(): Observable<{ solde: number, soldeMaximum: number, cummulTransactionMensuelle: number }> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.authService.getToken()}`
     });
-    return this.http.get<any>(`${this.apiUrl}/client/transaction/all`, { headers }).pipe(
-      map(response => response.transactions[0]?.sender?.solde)
+  
+    return this.http.get<any>(`${this.apiUrl}/user/getcompte`, { headers }).pipe(
+      map(response => {
+        return {
+          solde: response.data.solde,
+          soldeMaximum: response.data.soldeMaximum,
+          cummulTransactionMensuelle: response.data.cummulTransactionMensuelle
+        };
+      })
     );
   }
+  
 
-  getUserPlafond(): Observable<number> {
+  getUserPlafond(): Observable<{senderPlafond:number,receiverPlafond:number}> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.authService.getToken()}`
     });
     return this.http.get<any>(`${this.apiUrl}/client/transaction/all`, { headers }).pipe(
-      map(response => response.transactions[0]?.sender?.soldeMaximum)
+      map(response => {
+        const senderPlafond = response.transactions[0]?.sender?.soldeMaximum || 0;
+        const receiverPlafond = response.transactions[0]?.receiver?.soldeMaximum || 0;
+        return { senderPlafond, receiverPlafond };
+      })
     );
   }
   

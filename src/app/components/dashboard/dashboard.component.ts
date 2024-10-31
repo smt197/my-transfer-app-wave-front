@@ -11,6 +11,9 @@ import {TransferComponent} from '../transfer/transfer.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 
+
+
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -89,8 +92,9 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class DashboardComponent implements OnInit {
 
   userName: string | null = '';
-  solde!: number;
-  plafond!: number;
+  solde: number | null = null;
+  soldeMaximum: number | null = null;
+  cummulTransactionMensuelle: number | null = null;
   transactions: Transaction[] = [];
   notifications: Notification[] = [];
   currentUserId!:string ;
@@ -105,7 +109,7 @@ export class DashboardComponent implements OnInit {
     private transactionService: TransactionService,
     private http: HttpClient,private router:Router,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
     this.transferForm = this.fb.group({
       receiverId: ['', Validators.required],
@@ -136,14 +140,14 @@ export class DashboardComponent implements OnInit {
       const { receiverId, montant } = this.transferForm.value;
 
       this.transactionService.makeTransaction(receiverId, montant).subscribe({
-        next: (response) => {
+        next: async(response) => {
           console.log('Transfer successful:', response);
           this.transferForm.reset();
           // Add success notification logic here
         },
-        error: (error) => {
-          console.error('Transfer failed:', error);
-          this.errorMessage = error.message || 'Transfer failed. Please try again.';
+        error: async(error) => {
+          console.error('Transfer failed:', error.error.message);
+          this.errorMessage = error.error.message || 'Transfer failed. Please try again.';
         },
         complete: () => {
           this.isLoading = false;
@@ -195,13 +199,12 @@ export class DashboardComponent implements OnInit {
     });
 
     this.transactionService.getUserBalance().subscribe(
-      (balance) => this.solde = balance,
-      (error) => console.error('Erreur lors de la récupération du solde', error)
-    );
-
-    this.transactionService.getUserPlafond().subscribe(
-      (plafond) => this.plafond = plafond,
-      (error) => console.error('Erreur lors de la récupération du plafond', error)
+      (balance) => {
+        this.solde = balance.solde;
+        this.soldeMaximum = balance.soldeMaximum;
+        this.cummulTransactionMensuelle = balance.cummulTransactionMensuelle;
+      },
+      (error) => console.error('Erreur lors de la récupération du compte', error)
     );
 
     this.userName = this.authService.getUserName();

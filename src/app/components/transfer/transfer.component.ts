@@ -74,7 +74,7 @@ export class TransferComponent implements OnInit {
         },
         error: (error) => {
           console.error('Transfer failed:', error);
-          this.errorMessage = error.message || 'Transfer failed. Please try again.';
+          this.errorMessage = error.error.message || 'Transfer failed. Please try again.';
         },
         complete: () => {
           this.isLoading = false;

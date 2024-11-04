@@ -1,0 +1,11 @@
+<div class="dialog-overlay">
+    <div class="dialog-content">
+      <h3>Annuler la Transaction</h3>
+      <label for="transactionId">ID de la transaction :</label>
+      <input type="text" id="transactionId" [(ngModel)]="transactionId" />
+      <div class="dialog-buttons">
+        <button (click)="onCancel()">Annuler</button>
+        <button (click)="cancelConfirmed.emit('')">Fermer</button>
+      </div>
+    </div>
+  </div>

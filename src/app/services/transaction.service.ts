@@ -23,12 +23,6 @@ export class TransactionService {
     return this.http.post(`${this.apiUrl}/client/transfert`, body, { headers });
   }
 
-  // getAllTransactions(): Observable<Transaction[]> {
-  //   const headers = new HttpHeaders({
-  //     'Authorization': `Bearer ${this.authService.getToken()}`
-  //   });
-  //   return this.http.get<Transaction[]>(`${this.apiUrl}/client/transaction/all`, {headers});
-  // }
 
   getAllNotifications(): Observable<Notification[]> {
     const headers = new HttpHeaders({

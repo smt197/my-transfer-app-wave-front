@@ -7,14 +7,18 @@
       </div>
       
       <div class="balance-cards">
-        <div class="balance-card" @slideIn>
+        <div class="balance-card">
           <div class="card-content">
             <div class="card-icon">
               <i class="fas fa-wallet"></i>
             </div>
             <div class="balance-info">
               <h3>Solde</h3>
-              <h2>FR {{ solde }}</h2>
+              <h2 *ngIf="showBalance">FR {{ solde }}</h2>
+              <h2 *ngIf="!showBalance">****</h2>
+              <button (click)="toggleBalance()">
+                {{ showBalance ? 'Cacher' : 'Afficher' }} le solde
+              </button>
             </div>
           </div>
           <div class="card-background"></div>
@@ -94,6 +98,14 @@
     <!-- Transactions Section -->
     <div class="transactions-section" @fadeInUp>
       <h3>Transaction History</h3>
+
+      <div *ngIf="successMessage" class="success-message">
+        <i class="fas fa-check-circle"></i> {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+      </div>
+      
       <div class="transaction-list">
         <div *ngFor="let notification of notifications; let i = index" 
              class="transaction-item"
@@ -105,8 +117,13 @@
             <span class="transaction-name">{{ notification.message }}</span>
             <span class="transaction-date">{{ notification.date | date:'d MMMM yyyy' }}</span>
           </div>
+          <button class="cancel-button" (click)="openCancelDialog()">
+            Annuler
+          </button>
         </div>
       </div>
+      <app-cancel-transaction-dialog *ngIf="showDialog" 
+      (cancelConfirmed)="onCancelConfirmed($event)"></app-cancel-transaction-dialog>
     </div>
   </div>
 </div>

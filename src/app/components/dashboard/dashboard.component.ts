@@ -1,4 +1,4 @@
-import { Component, OnInit,HostListener } from '@angular/core';
+import { Component, OnInit,HostListener,ChangeDetectorRef } from '@angular/core';
 import { TransactionService } from '../../services/transaction.service';
 import { Transaction } from '../../models/transaction.model';
 import { Notification } from '../../models/notification';
@@ -10,7 +10,8 @@ import { AuthService } from '../../services/auth.service';
 import {TransferComponent} from '../transfer/transfer.component';
 import { TransactionComponent } from '../transaction/transaction.component';
 import { trigger, transition, style, animate } from '@angular/animations';
-
+import { TransService } from '../../services/trans.service';
+import { CancelTransactionDialogComponent } from '../cancel-transaction-dialog/cancel-transaction-dialog.component';
 
 
 
@@ -18,18 +19,18 @@ import { trigger, transition, style, animate } from '@angular/animations';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule,TransferComponent,TransactionComponent],
+  imports: [CommonModule,TransferComponent,TransactionComponent,CancelTransactionDialogComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   animations: [
     // Animation pour le fade in down
     trigger('fadeInDown', [
       transition(':enter', [
-        style({ 
+        style({
           opacity: 0,
           transform: 'translateY(-20px)'
         }),
-        animate('300ms ease-out', style({ 
+        animate('300ms ease-out', style({
           opacity: 1,
           transform: 'translateY(0)'
         }))
@@ -39,11 +40,11 @@ import { trigger, transition, style, animate } from '@angular/animations';
     // Animation pour le slide in
     trigger('slideIn', [
       transition(':enter', [
-        style({ 
+        style({
           opacity: 0,
           transform: 'translateX(-100px)'
         }),
-        animate('300ms ease-out', style({ 
+        animate('300ms ease-out', style({
           opacity: 1,
           transform: 'translateX(0)'
         }))
@@ -53,11 +54,11 @@ import { trigger, transition, style, animate } from '@angular/animations';
     // Animation pour le fade in up
     trigger('fadeInUp', [
       transition(':enter', [
-        style({ 
+        style({
           opacity: 0,
           transform: 'translateY(20px)'
         }),
-        animate('300ms ease-out', style({ 
+        animate('300ms ease-out', style({
           opacity: 1,
           transform: 'translateY(0)'
         }))
@@ -78,11 +79,11 @@ import { trigger, transition, style, animate } from '@angular/animations';
     // Animation pour les items de la liste
     trigger('listItem', [
       transition(':enter', [
-        style({ 
+        style({
           opacity: 0,
           transform: 'translateY(10px)'
         }),
-        animate('300ms ease-out', style({ 
+        animate('300ms ease-out', style({
           opacity: 1,
           transform: 'translateY(0)'
         }))
@@ -105,13 +106,18 @@ export class DashboardComponent implements OnInit {
   transferForm: FormGroup;
   isLoading = false;
   errorMessage = '';
-
+  successMessage: string | null = null;
+  transactionIdToCancel: string | null = null;
+  showDialog: boolean = false;
+  showBalance: boolean = true;
 
   constructor(
     private transactionService: TransactionService,
     private http: HttpClient,private router:Router,
     private authService: AuthService,
+    private transService: TransService,
     private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {
     this.transferForm = this.fb.group({
       receiverId: ['', Validators.required],
@@ -184,7 +190,7 @@ export class DashboardComponent implements OnInit {
   get montant() {
     return this.transferForm.get('montant');
   }
-  
+
 
   loadTransactions() {
     // this.transactionService.getAllTransactions().subscribe({
@@ -233,7 +239,7 @@ export class DashboardComponent implements OnInit {
     localStorage.clear(); // ou vos removeItem spécifiques
     this.router.navigate(['/login']).then(() => {
       window.location.reload();
-    }); 
+    });
     this.closeProfileMenu();
   }
   // Fermer le modal lorsqu'on clique en dehors
@@ -246,6 +252,46 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  cancelTransaction(transactionId: number | String) {
+    const token = this.authService.getToken(); 
+    console.log(`Annulation de la transaction avec ID: ${transactionId}`);
+
+    this.transService.cancelTransaction(transactionId, token!).subscribe(
+      (response) => {
+        if (response.success) {
+          this.successMessage = response.message;
+          // Supprime la transaction de la liste pour mise à jour de l'interface
+          this.notifications = this.notifications.filter(
+            (notification) => notification._id !== transactionId
+          );
+        }
+      },
+      (error) => {
+        this.errorMessage = error.error.message || 'Échec de l\'annulation de la transaction';
+      }
+    );
+  }
+
+
+  openCancelDialog() {
+    this.showDialog = true;
+  }
+
+  onCancelConfirmed(transactionId: string) {
+    if (transactionId) {
+      this.cancelTransaction(transactionId);
+    }
+    else {
+      console.error('ID de transaction non fourni pour annulation');
+    }
+    this.showDialog = false; 
+  }
+
+  toggleBalance() {
+    console.log('Toggled balance visibility');
+    this.showBalance = !this.showBalance;
+    this.cdr.detectChanges();
+  }
 
 
 

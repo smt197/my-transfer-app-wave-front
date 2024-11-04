@@ -194,6 +194,7 @@ $card-background: linear-gradient(135deg, #6e8efb, #4a90e2);
   gap: 1rem;
   padding: 1rem;
   border-radius: 10px;
+  border-bottom: 1px solid #ddd;
   transition: background-color 0.3s ease;
 
   &:hover {
@@ -269,4 +270,51 @@ $card-background: linear-gradient(135deg, #6e8efb, #4a90e2);
       transform: translateY(0);
     }
   }
+
+  &:hover {
+    background: darken($primary-color, 10%);
+  }
+}
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #d32f2f;
+}
+
+.success-message {
+  background-color: #dff0d8; /* Vert clair pour le fond */
+  color: #3c763d; /* Couleur du texte en vert foncé */
+  border: 1px solid #d6e9c6; /* Bordure vert */
+  padding: 15px; /* Espacement intérieur */
+  border-radius: 5px; /* Coins arrondis */
+  margin: 15px 0; /* Marge au-dessus et au-dessous */
+  font-size: 1em; /* Taille du texte */
+  display: flex; /* Utiliser flex pour aligner le contenu */
+  align-items: center; /* Centrer verticalement */
+}
+
+.error-message {
+  background-color: #f2dede; /* Rouge clair pour le fond */
+  color: #a94442; /* Couleur du texte en rouge foncé */
+  border: 1px solid #ebccd1; /* Bordure rouge */
+  padding: 15px; /* Espacement intérieur */
+  border-radius: 5px; /* Coins arrondis */
+  margin: 15px 0; /* Marge au-dessus et au-dessous */
+  font-size: 1em; /* Taille du texte */
+  display: flex; /* Utiliser flex pour aligner le contenu */
+  align-items: center; /* Centrer verticalement */
+}
+
+.success-message i,
+.error-message i {
+  margin-right: 10px; /* Espacement à droite de l'icône */
 }

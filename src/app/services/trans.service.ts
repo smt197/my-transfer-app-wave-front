@@ -22,9 +22,15 @@ export class TransService {
     }
 
   // Annuler une transaction
-  cancelTransaction(transactionId: string, userId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cancel`, { transactionId, userId });
-  }
+  // cancelTransaction(transactionId: string, userId: string): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/cancel`, { transactionId, userId });
+  // }
 
+  cancelTransaction(transactionId: number | String, token: String): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post(`${this.apiUrl}/transaction/cancel/${transactionId}`, {}, { headers });
+  }
 
 }
